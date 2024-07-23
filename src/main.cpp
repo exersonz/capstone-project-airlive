@@ -44,5 +44,5 @@ void loop() {
 
   screen::display(temp_f, humidity, voc_index, voc_category);
 
-  delay(10000);
+  delay(300000);
 }
