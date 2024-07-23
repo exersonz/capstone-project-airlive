@@ -35,11 +35,13 @@ void loop() {
   float voc_index = SENSOR::get_voc_index(temp_c, humidity);
   String voc_category = SENSOR::get_voc_category(temp_c);
 
+  String voc_data = voc_category + ": " + String(voc_index);
+
   if (IO::IO_connected) {
     IO::temperature->save(temp_f);
     IO::humidity->save(humidity);
     IO::voc->save(voc_index);    
-    IO::category->save(voc_category, my_coords.latitude, my_coords.longitude, my_coords.altitude);
+    IO::collective_data->save(voc_data, 35.68, 139.76, 131);
   }
 
   screen::display(temp_f, humidity, voc_index, voc_category);

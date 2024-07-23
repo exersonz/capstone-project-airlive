@@ -17,6 +17,7 @@ AdafruitIO_Feed *voc = io.feed("voc");
 AdafruitIO_Feed *category = io.feed("category");
 AdafruitIO_Feed *humidity = io.feed("humidity");
 AdafruitIO_Feed *temperature = io.feed("temperature");
+AdafruitIO_Feed *collective_data = io.feed("collective-data");
 
 // Attempt connection
 void try_connect() {
