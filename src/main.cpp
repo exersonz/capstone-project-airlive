@@ -48,7 +48,7 @@ void loop() {
     IO::temperature->save(temp_f);
     IO::humidity->save(humidity_str);
     IO::voc->save(voc_index);    
-    IO::collective_data->save(voc_data, 35.68, 139.76, 131);
+    IO::collective_data->save(voc_data, 40.73, 73.99);
   }
 
   screen::display(temp_f, temp_c, humidity_str, voc_index, voc_category);
