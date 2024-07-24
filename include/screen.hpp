@@ -39,21 +39,23 @@ void clear() {
 /**
  * @brief display info
  *
- * @param temperature
+ * @param temp_f
+ * @param temp_c
  * @param humidity
  * @param voc_index
  * @param voc_category
  */
-void display(double temperature, double humidity, int voc_index, String voc_category) {
+void display(double temp_f, double temp_c, String humidity, int voc_index, String voc_category) {
   clear();
   screen.setTextColor(ST77XX_ORANGE);
   screen.println("AirLive");
 
   screen.setTextColor(ST77XX_CYAN);
-  screen.println("------------------");
+  screen.println("--------------------");
 
   screen.setTextColor(ST77XX_WHITE);
-  screen.print("Temp (F): "); screen.println(temperature);
+  screen.print("Temp (F): "); screen.println(temp_f);
+  screen.print("Temp (C): "); screen.println(temp_c);
   screen.print("Humidity: "); screen.println(humidity);
   screen.print("VOC Index: "); screen.println(voc_index);
   screen.print("VOC Category: "); screen.println(voc_category);
