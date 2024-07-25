@@ -35,7 +35,7 @@ namespace SENSOR {
     }
 
     /**
-     * @brief Get the temperature reading from the BME688 sensor
+     * @brief Gets the temperature reading from the BME688 sensor
      * 
      * @return float 
      */
@@ -44,7 +44,7 @@ namespace SENSOR {
     }
 
     /**
-     * @brief Get the humidity reading from the BME688 sensor
+     * @brief Gets the humidity reading from the BME688 sensor
      * 
      * @return float 
      */
@@ -55,11 +55,12 @@ namespace SENSOR {
     /**
      * @brief Gets the VOC index from the SGP40 sensor
      * 
-     * @param temperature 
-     * @param humidity 
-     * @return int 
+     * @param temperature in degrees C
+     * @param humidity in %RH
+     * @return int32_t
      */
-    int get_voc_index(float temperature, float humidity) {
+    int32_t get_voc_index(float temperature, float humidity) {
+        Serial.println("Calculated VOC Index: " + String(sgp.measureVocIndex(temperature, humidity)));
         return sgp.measureVocIndex(temperature, humidity);
     }
 
@@ -69,11 +70,12 @@ namespace SENSOR {
      * @param voc_index 
      * @return String representing air quality category
      */
-    String get_voc_category(int voc_index) {
+    String get_voc_category(int32_t voc_index) {
         if (voc_index <= 100) return "Good";
-        if (voc_index <= 200) return "Moderate";
+        if (voc_index <= 200) return "\nModerate";
         if (voc_index <= 300) return "Poor";
-        return "Very Poor";
+        if (voc_index <= 400) return "\nVery Poor";
+        return "\nHazardous";
     }
 }
 

@@ -28,19 +28,20 @@ void try_connect() {
 
   io.connect();
 
+  unsigned long start_time = millis();
   // waits for a connection for 10 seconds
-  for (std::size_t i{0}; (i < 20) || (io.status() < AIO_CONNECTED); i++) {
+  while ((millis() - start_time) < 10000) {
+    if (io.status() >= AIO_CONNECTED) {
+      Serial.println("Connected to AdafruitIO!");
+      Serial.println(io.statusText());
+      IO_connected = true;
+      return;
+    }
     Serial.print(".");
     delay(500);
   }
 
-  if (io.status() < AIO_CONNECTED) {
-    Serial.println("Connection failed");
-  } else {
-    Serial.println("Connected to Adafruit IO\n");
-    Serial.println(io.statusText());
-    IO_connected = true;
-  }
+  Serial.println("Connection failed");
 }
 
 // run if connected

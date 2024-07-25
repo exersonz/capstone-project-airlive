@@ -8,6 +8,8 @@
 
 void handleMessage(AdafruitIO_Data *data);
 
+bool is_connected = false; // track connection status
+
 void setup() {
   Serial.begin(115200);
   while (!Serial) { delay(10); } // Wait for serial console to open!
@@ -23,28 +25,36 @@ void setup() {
   screen::initialize();
 
   // Connect to AdafruitIO
+  screen::displayLoadingMessage("Connecting to AdafruitIO..");
   IO::try_connect();
+  is_connected = IO::IO_connected;
+
+  if (!is_connected) {
+    screen::displayLoadingMessage("Going to \noffline mode");
+  }
 
   // Fetch other feeds
-  IO::aileen->onMessage(handleMessage);
-  IO::hanna->onMessage(handleMessage);
+  //IO::aileen->onMessage(handleMessage);
+  //IO::hanna->onMessage(handleMessage);
 }
 
 void loop() {
-  IO::run();
+  if (is_connected) {
+    IO::run();
+  }
 
   auto my_coords{GPS::query_GPS()};
 
   float temp_c = SENSOR::get_temperature();
   float temp_f = (temp_c * 1.8) + 32;
   float humidity = SENSOR::get_humidity();
-  float voc_index = SENSOR::get_voc_index(temp_c, humidity);
-  String voc_category = SENSOR::get_voc_category(temp_c);
+  int32_t voc_index = SENSOR::get_voc_index(temp_c, humidity);
+  String voc_category = SENSOR::get_voc_category(voc_index);
 
   String voc_data = voc_category + ": " + String(voc_index);
-  String humidity_str = String(humidity) + "%RH";
+  String humidity_str = String(humidity) + " %RH";
 
-  if (IO::IO_connected) {
+  if (is_connected && IO::IO_connected) {
     IO::temperature->save(temp_f);
     IO::humidity->save(humidity_str);
     IO::voc->save(voc_index);    
@@ -53,7 +63,7 @@ void loop() {
 
   screen::display(temp_f, temp_c, humidity_str, voc_index, voc_category);
 
-  delay(300000);
+  delay(10000);
 }
 
 void handleMessage(AdafruitIO_Data *data) {
